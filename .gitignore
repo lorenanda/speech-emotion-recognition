@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# data
+.data/
+Audio_Speech_Actors_01-24.zip
