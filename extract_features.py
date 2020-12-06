@@ -1,22 +1,11 @@
-emotions={
-  '01':'neutral',
-  '02':'calm',
-  '03':'happy',
-  '04':'sad',
-  '05':'angry',
-  '06':'fearful',
-  '07':'disgusted',
-  '08':'surprised'
-}
-
 PATH = os.listdir('data/')
 
-# get the emotion for each file
-emotions_list=[]
-gender_list = []
-files_list = []
 
 def extract_features(PATH):
+    emotions_list=[]
+    gender_list = []
+    files_list = []
+
     for item in PATH:
         if item[6:8]=='01':
             emotions_list.append('neutral')
@@ -42,8 +31,9 @@ def extract_features(PATH):
 
         files_list.append(item)
 
+    df = pd.DataFrame(columns=["emotion", "gender"])
+    df["emotion"] = emotions_list
+    df["gender"] = gender_list
+    df["file"] = files_list
 
-df = pd.DataFrame(columns=["emotion", "gender"])
-df["emotion"] = emotions_list
-df["gender"] = gender_list
-df["file"] = files_list
+    return df
