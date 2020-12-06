@@ -1,10 +1,12 @@
-PATH = os.listdir('data/')
-
+import os 
+import pandas as pd
 
 def extract_features(PATH):
-    emotions_list=[]
-    gender_list = []
+
     files_list = []
+    gender_list = []
+    emotions_list = []
+    intensity_list = []
 
     for item in PATH:
         if item[6:8]=='01':
@@ -29,11 +31,20 @@ def extract_features(PATH):
         elif int(item[-6:-4]) % 2 != 0:
             gender_list.append('male')
 
+        if item[9:11] == '01':
+            intensity_list.append('normal')
+        elif item[9:11] == '02':
+            intensity_list.append('strong')
+
         files_list.append(item)
 
-    df = pd.DataFrame(columns=["emotion", "gender"])
-    df["emotion"] = emotions_list
-    df["gender"] = gender_list
+    df = pd.DataFrame()
     df["file"] = files_list
+    df["gender"] = gender_list
+    df["emotion"] = emotions_list
+    df["intensity"] = intensity_list
 
-    return df
+    df.to_csv('speech_features.csv', index=False)
+
+PATH = os.listdir('data/')
+extract_features(PATH)
