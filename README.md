@@ -14,9 +14,16 @@ Filename identifiers
 - Repetition (01 = 1st repetition, 02 = 2nd repetition).
 - Actor (01 to 24. Odd numbered actors are male, even numbered actors are female).
 
+## Features
+y: Emotion
+X: 
+- MFCC (Mel-Frequency Cepstral Coefficients)
+- Zero-crossing rate: a measure of number of times in a given time interval/frame that the amplitude of the speech signals passes through a value of zero. 
+
 
 ## Models
 - Convolutional Neural Networks
 - Recurrent Neural Networks
+- Hidden Markov Models
 
-## 
+## How to use
