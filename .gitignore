@@ -109,6 +109,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+audio_env/
 
 # Spyder project settings
 .spyderproject
@@ -130,7 +131,6 @@ dmypy.json
 
 # data and other files
 data/
-Actor_01/
 Audio_Speech_Actors_01-24.zip
 voice_recognition.py
 images/
