@@ -1,0 +1,20 @@
+
+# Config file for automatic testing at travis-ci.org
+
+language: python
+
+before_script:
+  - sleep 3
+
+python:
+  - "3.8"
+
+# Command to install dependencies
+install:
+  - pip install -r requirements.txt --use-mirrors
+  - pip install pylint
+
+# Command to run tests
+script:
+  - pylint speech_emotion_recognition/*py
+  - pytest
