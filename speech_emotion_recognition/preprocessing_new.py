@@ -6,9 +6,9 @@ import numpy as np
 
 
 def extract_features(path, save_dir):
-"""
-Description
-"""
+    """
+    Description
+    """
     feature_list = []
 
     start_time = time.time()
