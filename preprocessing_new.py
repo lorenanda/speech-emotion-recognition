@@ -5,15 +5,10 @@ import librosa
 import numpy as np
 
 
-def features_creator(path, save_dir) -> str:
-    """
-    This function creates the dataset and saves both data and labels in
-    two files, X.joblib and y.joblib in the joblib_features folder.
-    With this method, you can persist your features and train quickly
-    new machine learning models instead of reloading the features
-    every time with this pipeline.
-    """
-
+def extract_features(path, save_dir):
+"""
+Description
+"""
     feature_list = []
 
     start_time = time.time()
@@ -37,25 +32,18 @@ def features_creator(path, save_dir) -> str:
 
     print("--- Data loaded. Loading time: %s seconds ---" % (time.time() - start_time))
 
-    # Creating X and y: zip makes a list of all the first elements, and a list of all the second elements.
     X, y = zip(*feature_list)
-
-    # Array conversion
     X, y = np.asarray(X), np.asarray(y)
+    #print(X.shape, y.shape)
 
-    # Array shape check
-    print(X.shape, y.shape)
-
-    # Preparing features dump
-    X_name, y_name = "X_mfcc.joblib", "y.joblib"
-
-    joblib.dump(X_mfcc, os.path.join(save_dir, X_name))
-    joblib.dump(y, os.path.join(save_dir, y_name))
+    X_save, y_save = "X.joblib", "y.joblib"
+    joblib.dump(X, os.path.join(save_dir, X_save))
+    joblib.dump(y, os.path.join(save_dir, y_save))
 
     return "Completed"
 
 
 if __name__ == "__main__":
     print("Routine started")
-    FEATURES = features_creator(path="data/", save_dir="features/")
+    FEATURES = extract_features(path="data/", save_dir="features/")
     print("Routine completed.")
