@@ -27,3 +27,5 @@ X:
 - Hidden Markov Models
 
 ## How to use
+
+## Resources
