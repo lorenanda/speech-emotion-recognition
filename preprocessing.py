@@ -89,4 +89,4 @@ def extract_audio_features(PATH):
 
 
 if __name__ == "__main__":
-    extract_audio_features("features/")
+    extract_audio_features("data/")

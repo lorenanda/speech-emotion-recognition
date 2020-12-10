@@ -10,21 +10,21 @@ def extract_features(PATH):
     intensity_list = []
 
     for item in PATH:
-        if item[6:8] == "01":
+        if item[7] == "1":
             emotions_list.append("neutral")
-        elif item[6:8] == "02":
+        elif item[7] == "2":
             emotions_list.append("calm")
-        elif item[6:8] == "03":
+        elif item[7] == "3":
             emotions_list.append("happy")
-        elif item[6:8] == "04":
+        elif item[7] == "4":
             emotions_list.append("sad")
-        elif item[6:8] == "05":
+        elif item[7] == "5":
             emotions_list.append("angry")
-        elif item[6:8] == "06":
+        elif item[7] == "6":
             emotions_list.append("fearful")
-        elif item[6:8] == "07":
+        elif item[7] == "7":
             emotions_list.append("disgusted")
-        elif item[6:8] == "08":
+        elif item[7] == "8":
             emotions_list.append("surprised")
 
         if int(item[-6:-4]) % 2 == 0:
@@ -32,9 +32,9 @@ def extract_features(PATH):
         elif int(item[-6:-4]) % 2 != 0:
             gender_list.append("male")
 
-        if item[9:11] == "01":
+        if item[10] == "1":
             intensity_list.append("normal")
-        elif item[9:11] == "02":
+        elif item[10] == "2":
             intensity_list.append("strong")
 
         files_list.append(item)
