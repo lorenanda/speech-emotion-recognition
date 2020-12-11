@@ -56,7 +56,7 @@ def extract_features():
 if __name__ == "__main__":
     print("Extracting features...")
     extract_features()
-    print("Exported features!")
+    print("Exported features from", len(df), "files.")
 
 
 # def extract_features(PATH):
