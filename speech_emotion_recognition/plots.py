@@ -3,7 +3,7 @@ import seaborn as sns
 import pandas as pd
 
 
-def make_plots():
+def make_eda_plots():
     fig_dims = (10, 7)
     fig, ax = plt.subplots(figsize=fig_dims)
 
@@ -26,4 +26,4 @@ def make_plots():
 
 
 if __name__ == "__main__":
-    make_plots()
+    make_eda_plots()
