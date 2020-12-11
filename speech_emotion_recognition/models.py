@@ -25,14 +25,21 @@ def cnn_model(X, y)
     x_testcnn = np.expand_dims(X_test, axis=2)
 
     model = Sequential()
-    model.add(Conv1D(64, 5, padding="same", input_shape=(40, 1)))
-    model.add(Activation("relu"))
-    model.add(Dropout(0.2))
+    model.add(Conv1D(64, 5,padding='same',input_shape=(40,1)))
+    model.add(Activation('relu'))
+    model.add(Conv1D(128, 5,padding='same'))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.1))
+    model.add(MaxPooling1D(pool_size=(8)))
+    model.add(Conv1D(128, 5,padding='same',))
+    model.add(Activation('relu'))
+    model.add(Conv1D(128, 5,padding='same',))
+    model.add(Activation('relu'))
     model.add(Flatten())
     model.add(Dense(8))
-    model.add(Activation("softmax"))
-
-    model_summary = model.summary()
+    model.add(Activation('softmax'))
+    
+    rmsprop = RMSprop(lr=0.00001, decay=1e-6)
 
     model.compile(
         loss="sparse_categorical_crossentropy",
@@ -48,7 +55,7 @@ def cnn_model(X, y)
         validation_data=(x_testcnn, y_test),
     )
 
-    # Loss plotting
+    # Plot model loss
     plt.plot(cnn_history.history["loss"])
     plt.plot(cnn_history.history["val_loss"])
     plt.title("CNN model loss")
@@ -58,7 +65,7 @@ def cnn_model(X, y)
     plt.savefig("images/cnn_loss.png")
     plt.close()
 
-    # Accuracy plotting
+    # Plot model accuracy
     plt.plot(cnn_history.history["accuracy"])
     plt.plot(cnn_history.history["val_accuracy"])
     plt.title("CNN model accuracy")
