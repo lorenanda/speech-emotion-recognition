@@ -5,6 +5,57 @@ import librosa
 import numpy as np
 
 
+def extract_file_info():
+    DATA_PATH = "speech_emotion_recognition/data"
+
+    df = pd.DataFrame(columns=["file", "gender", "emotion", "intensity"])
+
+    for dirname, _, filenames in os.walk(DATA_PATH):
+        for filename in filenames:
+
+            emotion = filename[7]
+            if emotion == "1":
+                emotion = "neutral"
+            elif emotion == "2":
+                emotion = "calm"
+            elif emotion == "3":
+                emotion = "happy"
+            elif emotion == "4":
+                emotion = "sad"
+            elif emotion == "5":
+                emotion = "angry"
+            elif emotion == "6":
+                emotion = "fearful"
+            elif emotion == "7":
+                emotion = "disgusted"
+            elif emotion == "8":
+                emotion == "surprised"
+
+            intensity = filename[10]
+            if intensity == "1":
+                emotion_intensity = "normal"
+            elif intensity == "2":
+                emotion_intensity = "strong"
+
+            gender = filename[-6:-4]
+            if int(gender) % 2 == 0:
+                gender = "female"
+            else:
+                gender = "male"
+
+            df = df.append(
+                {
+                    "file": filename,
+                    "gender": gender,
+                    "emotion": emotion,
+                    "intensity": emotion_intensity,
+                },
+                ignore_index=True,
+            )
+
+    df.to_csv("speech_emotion_recognition/features/df_features_new.csv", index=False)
+
+
 def extract_features(path, save_dir):
     """
     Description
@@ -44,6 +95,9 @@ def extract_features(path, save_dir):
 
 
 if __name__ == "__main__":
-    print("Routine started")
+    print("Extracting file info...")
+    extract_file_info()
+    print("Exported features from", len(df), "files.")
+    print("Extracting audio features...")
     FEATURES = extract_features(path="data/", save_dir="features/")
-    print("Routine completed.")
+    print("Finished extracting audio features.")
