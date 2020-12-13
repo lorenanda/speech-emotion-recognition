@@ -11,7 +11,7 @@ from tensorflow.keras.layers import (
     MaxPooling1D,
 )
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import RMSprop
+from keras.utils.vis_utils import plot_model
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
@@ -56,8 +56,6 @@ def cnn_model(X, y):
     model.add(Dense(8))
     model.add(Activation("softmax"))
 
-    # rmsprop = RMSprop(lr=0.00001, decay=1e-6)
-
     model.compile(
         loss="sparse_categorical_crossentropy",
         optimizer="rmsprop",
@@ -70,6 +68,13 @@ def cnn_model(X, y):
         batch_size=16,
         epochs=50,
         validation_data=(x_testcnn, y_test),
+    )
+
+    plot_model(
+        model,
+        to_file="speech_emotion_recognition/images/fmnist1.png",
+        show_shapes=True,
+        show_layer_names=True,
     )
 
     # Plot model loss
