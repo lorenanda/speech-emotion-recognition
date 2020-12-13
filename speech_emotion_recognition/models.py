@@ -1,18 +1,23 @@
-"""
-Neural network train file.
-"""
 import os
 import joblib
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow.keras.layers import Dense, Conv1D, Flatten, Dropout, Activation
+from tensorflow.keras.layers import (
+    Dense,
+    Conv1D,
+    Flatten,
+    Dropout,
+    Activation,
+    MaxPooling1D,
+)
 from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import RMSprop
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
 
-def cnn_model(X, y)
+def cnn_model(X, y):
     """
     This function trains the neural network.
     """
@@ -25,21 +30,33 @@ def cnn_model(X, y)
     x_testcnn = np.expand_dims(X_test, axis=2)
 
     model = Sequential()
-    model.add(Conv1D(64, 5,padding='same',input_shape=(40,1)))
-    model.add(Activation('relu'))
-    model.add(Conv1D(128, 5,padding='same'))
-    model.add(Activation('relu'))
+    model.add(Conv1D(64, 5, padding="same", input_shape=(40, 1)))
+    model.add(Activation("relu"))
+    model.add(Conv1D(128, 5, padding="same"))
+    model.add(Activation("relu"))
     model.add(Dropout(0.1))
     model.add(MaxPooling1D(pool_size=(8)))
-    model.add(Conv1D(128, 5,padding='same',))
-    model.add(Activation('relu'))
-    model.add(Conv1D(128, 5,padding='same',))
-    model.add(Activation('relu'))
+    model.add(
+        Conv1D(
+            128,
+            5,
+            padding="same",
+        )
+    )
+    model.add(Activation("relu"))
+    model.add(
+        Conv1D(
+            128,
+            5,
+            padding="same",
+        )
+    )
+    model.add(Activation("relu"))
     model.add(Flatten())
     model.add(Dense(8))
-    model.add(Activation('softmax'))
-    
-    rmsprop = RMSprop(lr=0.00001, decay=1e-6)
+    model.add(Activation("softmax"))
+
+    # rmsprop = RMSprop(lr=0.00001, decay=1e-6)
 
     model.compile(
         loss="sparse_categorical_crossentropy",
@@ -62,7 +79,7 @@ def cnn_model(X, y)
     plt.ylabel("loss")
     plt.xlabel("epoch")
     plt.legend(["train", "test"])
-    plt.savefig("images/cnn_loss.png")
+    plt.savefig("speech_emotion_recognition/images/cnn_loss.png")
     plt.close()
 
     # Plot model accuracy
@@ -72,7 +89,7 @@ def cnn_model(X, y)
     plt.ylabel("acc")
     plt.xlabel("epoch")
     plt.legend(["train", "test"])
-    plt.savefig("images/cnn_accuracy.png")
+    plt.savefig("speech_emotion_recognition/images/cnn_accuracy.png")
 
     predictions = model.predict_classes(x_testcnn)
     new_y_test = y_test.astype(int)
@@ -83,16 +100,17 @@ def cnn_model(X, y)
 
     model_name = "cnn_model.h5"
 
-    if not os.path.isdir("./models"):
-        os.makedirs("./models")
+    if not os.path.isdir("speech_emotion_recognition/models"):
+        os.makedirs("speech_emotion_recognition/models")
 
-    model_path = os.path.join("./models", model_name)
+    model_path = os.path.join("speech_emotion_recognition/models", model_name)
     model.save(model_path)
     print("Saved trained model at %s " % model_path)
 
 
 if __name__ == "__main__":
     print("Training started")
-    X = joblib.load("features/X.joblib")
-    y = joblib.load("features/y.joblib")
-    CNN_MODEL = cnn_model(X=X, y=y)
+    X = joblib.load("speech_emotion_recognition/features/X.joblib")
+    y = joblib.load("speech_emotion_recognition/features/y.joblib")
+    cnn_model(X=X, y=y)
+    print("Model finished.")
