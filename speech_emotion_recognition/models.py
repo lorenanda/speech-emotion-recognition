@@ -9,9 +9,10 @@ from tensorflow.keras.layers import (
     Dropout,
     Activation,
     MaxPooling1D,
+    BatchNormalization,
 )
 from tensorflow.keras.models import Sequential
-from keras.utils.vis_utils import plot_model
+from tensorflow.keras.utils import plot_model
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
@@ -51,6 +52,7 @@ def cnn_model(X, y):
             padding="same",
         )
     )
+    model.add(BatchNormalization())
     model.add(Activation("relu"))
     model.add(Flatten())
     model.add(Dense(8))
@@ -65,17 +67,17 @@ def cnn_model(X, y):
     cnn_history = model.fit(
         x_traincnn,
         y_train,
-        batch_size=16,
-        epochs=50,
+        batch_size=100,
+        epochs=100,
         validation_data=(x_testcnn, y_test),
     )
 
-    plot_model(
-        model,
-        to_file="speech_emotion_recognition/images/fmnist1.png",
-        show_shapes=True,
-        show_layer_names=True,
-    )
+    # plot_model(
+    #     model,
+    #     to_file="speech_emotion_recognition/images/cnn_model_summary.png",
+    #     show_shapes=True,
+    #     show_layer_names=True,
+    # )
 
     # Plot model loss
     plt.plot(cnn_history.history["loss"])
