@@ -1,6 +1,7 @@
 import os
 import joblib
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 from tensorflow.keras.layers import (
     Dense,
@@ -13,11 +14,9 @@ from tensorflow.keras.layers import (
 )
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import plot_model
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import accuracy_score
 
 
 def mlp_classifier(X, y):
@@ -114,13 +113,55 @@ def cnn_model(X, y):
     plt.legend(["train", "test"])
     plt.savefig("speech_emotion_recognition/images/cnn_accuracy.png")
 
+    # Evaluate the model
     cnn_pred = model.predict_classes(x_testcnn)
-    new_y_test = y_test.astype(int)
-    matrix = confusion_matrix(new_y_test, cnn_pred)
+    y_test_int = y_test.astype(int)
 
-    print(classification_report(new_y_test, cnn_pred))
+    matrix = confusion_matrix(y_test_int, cnn_pred)
     print(matrix)
 
+    plt.figure(figsize=(12, 10))
+    emotions = [
+        "neutral",
+        "calm",
+        "happy",
+        "sad",
+        "angry",
+        "fearful",
+        "disgusted",
+        "surprised",
+    ]
+    cm = pd.DataFrame(matrix)
+    ax = sns.heatmap(
+        matrix,
+        linecolor="white",
+        cmap="crest",
+        linewidth=1,
+        annot=True,
+        fmt="",
+        xticklabels=emotions,
+        yticklabels=emotions,
+    )
+    bottom, top = ax.get_ylim()
+    ax.set_ylim(bottom + 0.5, top - 0.5)
+    plt.title("CNN Model Confusion Matrix", size=20)
+    plt.xlabel("predicted emotion", size=14)
+    plt.ylabel("actual emotion", size=14)
+    plt.savefig("speech_emotion_recognition/images/CNN_confusionmatrix.png")
+    plt.show()
+
+    predictions_array = np.array([cnn_pred, y_test])
+    predictions_df = pd.DataFrame(data=predictions_array)  # .flatten())
+    predictions_df = predictions_df.T
+    predictions_df = predictions_df.rename(columns={0: "cnn_pred", 1: "y_test"})
+
+    clas_report = pd.DataFrame(
+        classification_report(y_test_int, cnn_pred, output_dict=True)
+    ).transpose()
+    las_report.to_csv("speech_emotion_recognition/features/cnn_clas_report.csv")
+    print(classification_report(y_test_int, cnn_pred))
+
+    # Export the trained model
     model_name = "cnn_model.h5"
 
     if not os.path.isdir("speech_emotion_recognition/models"):
