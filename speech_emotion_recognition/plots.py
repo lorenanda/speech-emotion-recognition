@@ -7,7 +7,7 @@ def make_eda_plots():
     fig_dims = (10, 7)
     fig, ax = plt.subplots(figsize=fig_dims)
 
-    df = pd.read_csv("features/df_features.csv")
+    df = pd.read_csv("speech_emotion_recognition/features/df_features.csv")
 
     plot_emotions = sns.countplot(
         x="emotion", data=df, color="lightseagreen", ax=ax

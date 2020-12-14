@@ -2,111 +2,51 @@ import os
 import pandas as pd
 
 
-def extract_features():
-    DATA_PATH = "speech_emotion_recognition/data"
+def extract_file_info(path):
 
-    df = pd.DataFrame(columns=["file", "gender", "emotion", "intensity"])
+    # path = "speech_emotion_recognition/data/"
+    actor_folders = os.listdir(path)
 
-    for dirname, _, filenames in os.walk(DATA_PATH):
-        for filename in filenames:
+    file_path = []
+    actor = []
+    emotion = []
+    intensity = []
+    gender = []
 
-            emotion = filename[7]
-            if emotion == "1":
-                emotion = "neutral"
-            elif emotion == "2":
-                emotion = "calm"
-            elif emotion == "3":
-                emotion = "happy"
-            elif emotion == "4":
-                emotion = "sad"
-            elif emotion == "5":
-                emotion = "angry"
-            elif emotion == "6":
-                emotion = "fearful"
-            elif emotion == "7":
-                emotion = "disgusted"
-            elif emotion == "8":
-                emotion == "surprised"
-
-            intensity = filename[10]
-            if intensity == "1":
-                emotion_intensity = "normal"
-            elif intensity == "2":
-                emotion_intensity = "strong"
-
-            gender = filename[-6:-4]
-            if int(gender) % 2 == 0:
-                gender = "female"
+    for i in actor_folders:
+        filename = os.listdir(path + i)
+        for f in filename:
+            file_path.append(path + i + "/" + f)
+            emotion.append(int(part[2]))
+            actor.append(int(part[6]))
+            intensity.append(int(part[3]))
+            bg = int(part[6])
+            if bg % 2 == 0:
+                bg = "female"
             else:
-                gender = "male"
+                bg = "male"
+            gender.append(bg)
 
-            df = df.append(
-                {
-                    "file": filename,
-                    "gender": gender,
-                    "emotion": emotion,
-                    "intensity": emotion_intensity,
-                },
-                ignore_index=True,
-            )
-
-    df.to_csv("speech_emotion_recognition/features/df_features_new.csv", index=False)
-
-
-if __name__ == "__main__":
-    print("Extracting features...")
-    extract_features()
-    print("Exported features from", len(df), "files.")
-
-
-# def extract_features(PATH):
-
-#     files_list = []
-#     gender_list = []
-#     emotions_list = []
-#     intensity_list = []
-
-#     for dir, _, files in os.walk(PATH):
-#         for item in files:
-#             if int(item[7]) == "1":
-#                 emotions_list.append("neutral")
-#             elif item[7] == "2":
-#                 emotions_list.append("calm")
-#             elif item[7] == "3":
-#                 emotions_list.append("happy")
-#             elif item[7] == "4":
-#                 emotions_list.append("sad")
-#             elif item[7] == "5":
-#                 emotions_list.append("angry")
-#             elif item[7] == "6":
-#                 emotions_list.append("fearful")
-#             elif item[7] == "7":
-#                 emotions_list.append("disgusted")
-#             elif item[7] == "8":
-#                 emotions_list.append("surprised")
-
-#             if int(item[-6:-4]) % 2 == 0:
-#                 gender_list.append("female")
-#             elif int(item[-6:-4]) % 2 != 0:
-#                 gender_list.append("male")
-
-#             if item[10] == "1":
-#                 intensity_list.append("normal")
-#             elif item[10] == "2":
-#                 intensity_list.append("strong")
-
-#             files_list.append(item)
-
-#         df = pd.DataFrame()
-#         df["file"] = files_list
-#         df["gender"] = gender_list
-#         df["emotion"] = emotions_list
-#         df["intensity"] = intensity_list
-
-#         df.to_csv("features/df_features_new.csv", index=False)
+    audio_df = pd.DataFrame(emotion)
+    audio_df = audio_df.replace(
+        {
+            1: "neutral",
+            2: "calm",
+            3: "happy",
+            4: "sad",
+            5: "angry",
+            6: "fearful",
+            7: "disgusted",
+            8: "surprised",
+        }
+    )
+    audio_df = pd.concat(
+        [pd.DataFrame(gender), audio_df, pd.DataFrame(intensity), pd.DataFrame(actor)],
+        axis=1,
+    )
+    audio_df.columns = ["gender", "emotion", "intensity", "actor"]
+    audio_df = pd.concat([audio_df, pd.DataFrame(file_path, columns=["path"])], axis=1)
+    audio_df.to_csv("speech_emotion_recognition/features/df_features_new.csv", index=0)
 
 
-# if __name__ == "__main__":
-#     # PATH = os.listdir("data/")
-#     # PATH = os.walk("data/")
-#     extract_features("data/")
+extract_file_info(path="speech_emotion_recognition/data/")
