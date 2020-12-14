@@ -35,7 +35,8 @@ def mlp_classifier(X, y):
 
 def cnn_model(X, y):
     """
-    This function trains the neural network.
+    This function transforms the X and y features,
+    trains a convolutional neural network, and plots the results.
     """
 
     X_train, X_test, y_train, y_test = train_test_split(
