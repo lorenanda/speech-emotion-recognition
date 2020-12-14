@@ -3,6 +3,7 @@ import time
 import joblib
 import librosa
 import numpy as np
+import pandas as pd
 
 
 def extract_file_info():
@@ -73,7 +74,7 @@ def extract_features(path, save_dir):
                     librosa.feature.mfcc(y=y_lib, sr=sample_rate, n_mfcc=40).T, axis=0
                 )
 
-                file = int(file[7:8]) - 1
+                file = int(file[7:8])  # - 1
                 arr = mfccs, file
                 feature_list.append(arr)
 
@@ -97,7 +98,6 @@ def extract_features(path, save_dir):
 if __name__ == "__main__":
     print("Extracting file info...")
     extract_file_info()
-    print("Exported features from", len(df), "files.")
     print("Extracting audio features...")
     FEATURES = extract_features(path="data/", save_dir="features/")
     print("Finished extracting audio features.")
