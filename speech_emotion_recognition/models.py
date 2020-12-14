@@ -24,12 +24,25 @@ def mlp_classifier(X, y):
         X, y, test_size=0.2, random_state=42
     )
 
-    model = MLPClassifier()
-    model.fit(X_train, y_train)
-    mlp_pred = model.predict(X_test)
+    mlp_model = MLPClassifier(
+        hidden_layer_sizes=(100,),
+        solver="adam",
+        alpha=0.001,
+        shuffle=True,
+        verbose=True,
+        momentum=0.8,
+    )
+    mlp_model.fit(x_train, y_train)
 
-    accuracy = accuracy_score(y_true=y_test, y_pred=mlp_pred)
-    print("Accuracy: {:.2f}%".format(accuracy * 100))
+    mlp_pred = mlp_model.predict(x_test)
+    mlp_accuracy = mlp_model.score(x_test, y_test)
+    print("Accuracy: {:.2f}%".format(mlp_accuracy * 100))  # 47.57%
+
+    mlp_clas_report = pd.DataFrame(
+        classification_report(y_test, mlp_pred, output_dict=True)
+    ).transpose()
+    clas_report.to_csv("speech_emotion_recognition/features/mlp_clas_report.csv")
+    print(classification_report(y_test, mlp_pred))
 
 
 def cnn_model(X, y):
@@ -158,7 +171,7 @@ def cnn_model(X, y):
     clas_report = pd.DataFrame(
         classification_report(y_test_int, cnn_pred, output_dict=True)
     ).transpose()
-    las_report.to_csv("speech_emotion_recognition/features/cnn_clas_report.csv")
+    clas_report.to_csv("speech_emotion_recognition/features/cnn_clas_report.csv")
     print(classification_report(y_test_int, cnn_pred))
 
     # Export the trained model
