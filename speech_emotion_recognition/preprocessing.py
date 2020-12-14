@@ -1,92 +1,101 @@
-"""
-This function extracts the audio features
-and information from the voice recordings.
-"""
-
 import os
-import pandas as pd
-import numpy as np
+import time
+import joblib
 import librosa
+import numpy as np
+import pandas as pd
 
 
-def extract_audio_features(PATH):
+def extract_file_info():
+    DATA_PATH = "speech_emotion_recognition/data"
 
-    filenames = []
-    y_list = []
-    sr_list = []
-    mfcc_list = []
-    # fft_list = []
-    # magnitude_list = []
-    # frequency_list = []
-    emotions_list = []
-    gender_list = []
-    intensity_list = []
+    df = pd.DataFrame(columns=["file", "gender", "emotion", "intensity"])
 
-    files = librosa.util.find_files(PATH, ext=["wav"])
-    files = np.asarray(files)
+    for dirname, _, filenames in os.walk(DATA_PATH):
+        for filename in filenames:
 
-    for file in files:
-        filename = file[-24:]
-        filenames.append(filename)
+            emotion = filename[7]
+            if emotion == "1":
+                emotion = "neutral"
+            elif emotion == "2":
+                emotion = "calm"
+            elif emotion == "3":
+                emotion = "happy"
+            elif emotion == "4":
+                emotion = "sad"
+            elif emotion == "5":
+                emotion = "angry"
+            elif emotion == "6":
+                emotion = "fearful"
+            elif emotion == "7":
+                emotion = "disgusted"
+            elif emotion == "8":
+                emotion == "surprised"
 
-        if filename[6:8] == "01":
-            emotions_list.append("neutral")
-        elif filename[6:8] == "02":
-            emotions_list.append("calm")
-        elif filename[6:8] == "03":
-            emotions_list.append("happy")
-        elif filename[6:8] == "04":
-            emotions_list.append("sad")
-        elif filename[6:8] == "05":
-            emotions_list.append("angry")
-        elif filename[6:8] == "06":
-            emotions_list.append("fearful")
-        elif filename[6:8] == "07":
-            emotions_list.append("disgusted")
-        elif filename[6:8] == "08":
-            emotions_list.append("surprised")
+            intensity = filename[10]
+            if intensity == "1":
+                emotion_intensity = "normal"
+            elif intensity == "2":
+                emotion_intensity = "strong"
 
-        if int(filename[-6:-4]) % 2 == 0:
-            gender_list.append("female")
-        elif int(filename[-6:-4]) % 2 != 0:
-            gender_list.append("male")
+            gender = filename[-6:-4]
+            if int(gender) % 2 == 0:
+                gender = "female"
+            else:
+                gender = "male"
 
-        if filename[9:11] == "01":
-            intensity_list.append("normal")
-        elif filename[9:11] == "02":
-            intensity_list.append("strong")
+            df = df.append(
+                {
+                    "file": filename,
+                    "gender": gender,
+                    "emotion": emotion,
+                    "intensity": emotion_intensity,
+                },
+                ignore_index=True,
+            )
 
-        y, sample_rate = librosa.load(file, res_type="kaiser_fast")
-        y_list.append(y)
-        sr_list.append(sample_rate)
+    df.to_csv("speech_emotion_recognition/features/df_features_new.csv", index=False)
 
-        # fft = np.fft.fft(y)
-        # fft_list.append(fft)
 
-        # magnitude = np.abs(fft)
-        # magnitude_list.append(magnitude)
+def extract_features(path, save_dir):
+    """
+    Description
+    """
+    feature_list = []
 
-        # frequency = np.linspace(0, sr, len(magnitude))
-        # frequency_list.append(frequency)
+    start_time = time.time()
+    for dir, _, files in os.walk(path):
+        for file in files:
+            y_lib, sample_rate = librosa.load(
+                os.path.join(dir, file), res_type="kaiser_fast"
+            )
+            mfccs = np.mean(
+                librosa.feature.mfcc(y=y_lib, sr=sample_rate, n_mfcc=40).T, axis=0
+            )
 
-        mfcc = np.mean(librosa.feature.mfcc(y=y, n_mfcc=40).T, axis=0)
-        mfcc_list.append(np.hstack(mfcc))
+            file = int(file[7:8]) - 1
+            arr = mfccs, file
+            feature_list.append(arr)
 
-        audio_df = pd.DataFrame()
-        audio_df["filename"] = filenames
-        audio_df["emotion"] = emotions_list
-        audio_df["gender"] = gender_list
-        audio_df["intensity"] = intensity_list
-        audio_df["y"] = y_list
-        audio_df["sr"] = sr_list
-        audio_df["mfcc"] = mfcc_list
-        # audio_df['fft'] = fft_list
-        # audio_df['magnitude'] = magnitude_list
-        # audio_df['frequency'] = frequency_list
+    print("Data loaded in %s seconds." % (time.time() - start_time))
 
-    audio_df.to_csv("audio_features.csv")
-    return audio_df
+    X, y = zip(*feature_list)
+    X, y = np.asarray(X), np.asarray(y)
+    print(X.shape, y.shape)
+
+    X_save, y_save = "X.joblib", "y.joblib"
+    joblib.dump(X, os.path.join(save_dir, X_save))
+    joblib.dump(y, os.path.join(save_dir, y_save))
+
+    return "Preprocessing completed."
 
 
 if __name__ == "__main__":
-    extract_audio_features("data/")
+    print("Extracting file info...")
+    extract_file_info()
+    print("Extracting audio features...")
+    FEATURES = extract_features(
+        path="speech_emotion_recognition/data/",
+        save_dir="speech_emotion_recognition/features/",
+    )
+    print("Finished extracting audio features.")

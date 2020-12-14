@@ -16,6 +16,21 @@ from tensorflow.keras.utils import plot_model
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score
+
+
+def mlp_classifier(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    model = MLPClassifier()
+    model.fit(X_train, y_train)
+    mlp_pred = model.predict(X_test)
+
+    accuracy = accuracy_score(y_true=y_test, y_pred=mlp_pred)
+    print("Accuracy: {:.2f}%".format(accuracy * 100))
 
 
 def cnn_model(X, y):
@@ -59,8 +74,8 @@ def cnn_model(X, y):
     model.add(Activation("softmax"))
 
     model.compile(
-        loss="sparse_categorical_crossentropy",
-        optimizer="rmsprop",
+        loss="categorical_crossentropy",
+        optimizer="adam",  # rmsprop
         metrics=["accuracy"],
     )
 
@@ -98,11 +113,11 @@ def cnn_model(X, y):
     plt.legend(["train", "test"])
     plt.savefig("speech_emotion_recognition/images/cnn_accuracy.png")
 
-    predictions = model.predict_classes(x_testcnn)
+    cnn_pred = model.predict_classes(x_testcnn)
     new_y_test = y_test.astype(int)
-    matrix = confusion_matrix(new_y_test, predictions)
+    matrix = confusion_matrix(new_y_test, cnn_pred)
 
-    print(classification_report(new_y_test, predictions))
+    print(classification_report(new_y_test, cnn_pred))
     print(matrix)
 
     model_name = "cnn_model.h5"
