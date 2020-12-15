@@ -54,13 +54,13 @@ def extract_file_info():
                 ignore_index=True,
             )
 
-    df.to_csv("speech_emotion_recognition/features/df_features_new.csv", index=False)
+    df.to_csv("speech_emotion_recognition/features/df_file_features.csv", index=False)
 
 
 def extract_features(path, save_dir):
-    """
-    Description
-    """
+"""This function loops over the audio files,
+extracts the MFCC, and saves X and y in joblib format.
+"""
     feature_list = []
 
     start_time = time.time()
@@ -89,6 +89,73 @@ def extract_features(path, save_dir):
 
     return "Preprocessing completed."
 
+
+
+
+"""This function loops over the audio files,
+extracts four audio feature and saves them in a dataframe.
+"""
+
+data_path = "speech_emotion_recognition/data/"
+actor_folders = os.listdir(data_path) 
+
+emotion_nr = []
+emotion = []
+gender = []
+actor = []
+file_path = []
+
+for i in actor_folders:
+    filename = os.listdir(data_path + i) 
+    for f in filename: 
+        part = f.split('.')[0].split('-')
+        emotion_nr.append(int(part[2]))
+        emotion.append(int(part[2]))
+        actor.append(int(part[6]))
+        bg = int(part[6])
+        if bg%2 == 0:
+            bg = "female"
+        else:
+            bg = "male"
+        gender.append(bg)
+        file_path.append(data_path + i + '/' + f)
+
+
+def extract_audio_features():
+    """This function loops over the audio files,
+    extracts four audio feature and saves them in a dataframe.
+    """
+    audio_df = pd.DataFrame(emotion)
+    audio_df = audio_df.replace({1:'neutral', 2:'calm', 3:'happy', 4:'sad', 5:'angry', 6:'fearful', 7:'disgusted', 8:'surprised'})
+    audio_df = pd.concat([pd.DataFrame(gender),audio_df,pd.DataFrame(actor)],axis=1)
+    audio_df.columns = ['gender','emotion','emotion_nr','actor']
+    audio_df = pd.concat([audio_df,pd.DataFrame(file_path, columns = ['path'])],axis=1)
+    audio_df.tail()
+    #audio_df.to_csv('speech_emotion_recognition/features/df_features_new.csv')
+
+    df = pd.DataFrame(columns=['chroma'])
+
+    counter=0
+
+    for index,path in enumerate(audio_df.path):
+        X, sample_rate = librosa.load(path, res_type='kaiser_fast',duration=3,sr=44100,offset=0.5)
+            
+        chroma = librosa.feature.chroma_stft(y=X, sr=sample_rate)
+        chroma = np.mean(chroma, axis = 0)
+        df.loc[counter] = [chroma]
+        counter=counter+1   
+
+        # spectrogram = librosa.feature.melspectrogram(y=X, sr=sample_rate, n_mels=128,fmax=8000) 
+        # db_spec = librosa.power_to_db(spectrogram)
+        # log_spectrogram = np.mean(db_spec, axis = 0)
+        # df.loc[counter] = [log_spectrogram]
+        # counter=counter+1  
+
+    # df_chroma = pd.concat([audio_df,pd.DataFrame(df['chroma'].values.tolist())],axis=1)
+    # df_chroma = df_combined.fillna(0)
+    # df_chroma.head()
+
+    # df_chroma.to_csv("speech_emotion_recognition/features/df_chroma.csv", index=0)
 
 if __name__ == "__main__":
     print("Extracting file info...")
