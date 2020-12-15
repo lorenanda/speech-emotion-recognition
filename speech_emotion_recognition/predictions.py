@@ -3,12 +3,15 @@ import librosa
 from tensorflow import keras
 
 
-def make_predictions(file, model):
+def make_predictions(file):
     cnn_model = keras.models.load_model(
         "speech_emotion_recognition/models/cnn_model.h5"
     )
+    lstm_model = keras.models.load_model(
+        "speech_emotion_recognition/models/lstm_model.h5"
+    )
     prediction_data, prediction_sr = librosa.load(
-        "speech_emotion_recognition/recordings/work.wav",
+        file,
         res_type="kaiser_fast",
         duration=3,
         sr=22050,
@@ -37,4 +40,9 @@ def make_predictions(file, model):
         if int(key) == predictions:
             label = value
 
-    print("This voice sounds", predictions, label)  # 2 (happy)
+    print("This voice sounds", predictions, label)
+
+
+if __name__ == "__main__":
+    work_rec = "speech_emotion_recognition/recordings/work.wav"
+    make_predictions(file=work_rec)
