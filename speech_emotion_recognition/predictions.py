@@ -23,7 +23,7 @@ def make_predictions(file):
     )
     x = np.expand_dims(mfccs, axis=1)
     x = np.expand_dims(x, axis=0)
-    predictions = cnn_model.predict_classes(x)
+    predictions = lstm_model.predict_classes(x)
 
     emotions_dict = {
         "0": "neutral",
@@ -44,5 +44,5 @@ def make_predictions(file):
 
 
 if __name__ == "__main__":
-    work_rec = "speech_emotion_recognition/recordings/work.wav"
+    work_rec = "speech_emotion_recognition/recordings/get_out.wav"
     make_predictions(file=work_rec)
