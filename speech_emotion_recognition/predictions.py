@@ -1,3 +1,5 @@
+import numpy as np
+import librosa
 from tensorflow import keras
 
 
@@ -19,4 +21,20 @@ def make_predictions(file, model):
     x = np.expand_dims(mfccs, axis=1)
     x = np.expand_dims(x, axis=0)
     predictions = cnn_model.predict_classes(x)
-    print("Prediction is", predictions)  # self.convert_class_to_emotion(predictions))
+
+    emotions_dict = {
+        "0": "neutral",
+        "1": "calm",
+        "2": "happy",
+        "3": "sad",
+        "4": "angry",
+        "5": "fearful",
+        "6": "disgusted",
+        "7": "surprised",
+    }
+
+    for key, value in emotions_dict.items():
+        if int(key) == predictions:
+            label = value
+
+    print("This voice sounds", predictions, label)  # 2 (happy)
