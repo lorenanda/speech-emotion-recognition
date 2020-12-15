@@ -97,11 +97,9 @@ def cnn_model(X, y):
     This function transforms the X and y features,
     trains a convolutional neural network, and plots the results.
     """
-    oversample = RandomOverSampler(sampling_strategy="minority")
-    X_over, y_over = oversample.fit_resample(X, y)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X_over, y_over, test_size=0.2, random_state=42
+        X, y, test_size=0.2, random_state=42
     )
 
     x_traincnn = np.expand_dims(X_train, axis=2)
@@ -202,7 +200,7 @@ def cnn_model(X, y):
     plt.title("CNN Model Confusion Matrix", size=20)
     plt.xlabel("predicted emotion", size=14)
     plt.ylabel("actual emotion", size=14)
-    plt.savefig("speech_emotion_recognition/images/CNN_confusionmatrix2.png")
+    plt.savefig("speech_emotion_recognition/images/CNN_confusionmatrix.png")
     plt.show()
 
     # predictions_array = np.array([cnn_pred, y_test])
@@ -213,13 +211,13 @@ def cnn_model(X, y):
     clas_report = pd.DataFrame(
         classification_report(y_test_int, cnn_pred, output_dict=True)
     ).transpose()
-    clas_report.to_csv("speech_emotion_recognition/features/cnn_clas_report2.csv")
+    clas_report.to_csv("speech_emotion_recognition/features/cnn_clas_report.csv")
     print(classification_report(y_test_int, cnn_pred))
 
     if not os.path.isdir("speech_emotion_recognition/models"):
         os.makedirs("speech_emotion_recognition/models")
 
-    model_path = os.path.join("speech_emotion_recognition/models", "cnn_model2.h5")
+    model_path = os.path.join("speech_emotion_recognition/models", "cnn_model.h5")
     model.save(model_path)
     print("Saved trained model at %s " % model_path)
 
