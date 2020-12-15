@@ -18,6 +18,8 @@ from tensorflow.keras.utils import plot_model
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
+from imblearn.over_sampling import RandomOverSampler
+from collections import Counter
 
 
 def mlp_classifier(X, y):
@@ -95,36 +97,31 @@ def cnn_model(X, y):
     This function transforms the X and y features,
     trains a convolutional neural network, and plots the results.
     """
+    oversample = RandomOverSampler(sampling_strategy="minority")
+    X_over, y_over = oversample.fit_resample(X, y)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
+        X_over, y_over, test_size=0.2, random_state=42
     )
 
     x_traincnn = np.expand_dims(X_train, axis=2)
     x_testcnn = np.expand_dims(X_test, axis=2)
 
     model = Sequential()
-    model.add(Conv1D(64, 5, padding="same", input_shape=(40, 1)))
+    model.add(Conv1D(16, 5, padding="same", input_shape=(40, 1)))
     model.add(Activation("relu"))
-    model.add(Conv1D(128, 5, padding="same"))
+    model.add(Conv1D(8, 5, padding="same"))
     model.add(Activation("relu"))
-    model.add(Dropout(0.1))  # 0.3
-    model.add(MaxPooling1D(pool_size=(8)))
+    # model.add(Dropout(0.1))  # 0.3
+    # model.add(MaxPooling1D(pool_size=(8)))
     model.add(
         Conv1D(
-            128,
+            8,
             5,
             padding="same",
         )
     )
     model.add(Activation("relu"))
-    model.add(
-        Conv1D(
-            128,
-            5,
-            padding="same",
-        )
-    )
     model.add(BatchNormalization())
     model.add(Activation("relu"))
     model.add(Flatten())
@@ -140,7 +137,7 @@ def cnn_model(X, y):
     cnn_history = model.fit(
         x_traincnn,
         y_train,
-        batch_size=100,  # 52
+        batch_size=50,  # 100
         epochs=100,  # 50
         validation_data=(x_testcnn, y_test),
     )
@@ -159,7 +156,7 @@ def cnn_model(X, y):
     plt.ylabel("loss")
     plt.xlabel("epoch")
     plt.legend(["train", "test"])
-    plt.savefig("speech_emotion_recognition/images/cnn_loss.png")
+    plt.savefig("speech_emotion_recognition/images/cnn_loss2.png")
     plt.close()
 
     # Plot model accuracy
@@ -169,7 +166,7 @@ def cnn_model(X, y):
     plt.ylabel("acc")
     plt.xlabel("epoch")
     plt.legend(["train", "test"])
-    plt.savefig("speech_emotion_recognition/images/cnn_accuracy.png")
+    plt.savefig("speech_emotion_recognition/images/cnn_accuracy2.png")
 
     # Evaluate the model
     cnn_pred = model.predict_classes(x_testcnn)
@@ -205,26 +202,24 @@ def cnn_model(X, y):
     plt.title("CNN Model Confusion Matrix", size=20)
     plt.xlabel("predicted emotion", size=14)
     plt.ylabel("actual emotion", size=14)
-    plt.savefig("speech_emotion_recognition/images/CNN_confusionmatrix.png")
+    plt.savefig("speech_emotion_recognition/images/CNN_confusionmatrix2.png")
     plt.show()
 
-    predictions_array = np.array([cnn_pred, y_test])
-    predictions_df = pd.DataFrame(data=predictions_array)  # .flatten())
-    predictions_df = predictions_df.T
-    predictions_df = predictions_df.rename(columns={0: "cnn_pred", 1: "y_test"})
+    # predictions_array = np.array([cnn_pred, y_test])
+    # predictions_df = pd.DataFrame(data=predictions_array)  # .flatten())
+    # predictions_df = predictions_df.T
+    # predictions_df = predictions_df.rename(columns={0: "cnn_pred", 1: "y_test"})
 
     clas_report = pd.DataFrame(
         classification_report(y_test_int, cnn_pred, output_dict=True)
     ).transpose()
-    clas_report.to_csv("speech_emotion_recognition/features/cnn_clas_report.csv")
+    clas_report.to_csv("speech_emotion_recognition/features/cnn_clas_report2.csv")
     print(classification_report(y_test_int, cnn_pred))
-
-    model_name = "cnn_model.h5"
 
     if not os.path.isdir("speech_emotion_recognition/models"):
         os.makedirs("speech_emotion_recognition/models")
 
-    model_path = os.path.join("speech_emotion_recognition/models", model_name)
+    model_path = os.path.join("speech_emotion_recognition/models", "cnn_model2.h5")
     model.save(model_path)
     print("Saved trained model at %s " % model_path)
 

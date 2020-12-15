@@ -3,7 +3,8 @@ import time
 import joblib
 import librosa
 import numpy as np
-import pandas as pd
+from imblearn.over_sampling import RandomOverSampler
+from collections import Counter
 
 
 def extract_file_info():
@@ -156,6 +157,18 @@ def extract_audio_features():
     # df_chroma.head()
 
     # df_chroma.to_csv("speech_emotion_recognition/features/df_chroma.csv", index=0)
+
+def oversample(X, y):
+    X = joblib.load("speech_emotion_recognition/features/X.joblib")  # mfcc
+    y = joblib.load("speech_emotion_recognition/features/y.joblib")
+    print(Counter(y))  # {7: 192, 4: 192, 3: 192, 1: 192, 6: 192, 2: 192, 5: 192, 0: 96}
+
+    oversample = RandomOverSampler(sampling_strategy="minority")
+    X_over, y_over = oversample.fit_resample(X, y)
+
+    X_over_save, y_over_save = "X_over.joblib", "y_over.joblib"
+    joblib.dump(X_over, os.path.join("speech_emotion_recognition/features/", X_over_save))
+    joblib.dump(y_over, os.path.join("speech_emotion_recognition/features/", y_over_save))
 
 if __name__ == "__main__":
     print("Extracting file info...")
