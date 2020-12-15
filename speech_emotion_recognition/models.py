@@ -11,6 +11,7 @@ from tensorflow.keras.layers import (
     Activation,
     MaxPooling1D,
     BatchNormalization,
+    LSTM,
 )
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import plot_model
@@ -45,6 +46,50 @@ def mlp_classifier(X, y):
     print(classification_report(y_test, mlp_pred))
 
 
+def lstm_model(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    X_train_lstm = np.expand_dims(X_train, axis=2)
+    X_test_lstm = np.expand_dims(X_test, axis=2)
+
+    lstm_model = Sequential()
+    lstm_model.add(LSTM(64, input_shape=(40, 1), return_sequences=True))
+    lstm_model.add(LSTM(32))
+    lstm_model.add(Dense(32, activation="relu"))
+    lstm_model.add(Dropout(0.1))  #
+    lstm_model.add(Dense(8, activation="softmax"))
+
+    lstm_model.compile(
+        optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"]
+    )
+
+    lstm_model.summary()
+
+    # train model
+    lstm_history = lstm_model.fit(X_train_lstm, y_train, batch_size=32, epochs=100)
+
+    # evaluate model on test set
+    test_loss, test_acc = lstm_model.evaluate(X_test_lstm, y_test, verbose=2)
+    print("\nTest accuracy:", test_acc)
+
+    # plot accuracy/error for training and validation
+    plt.plot(lstm_history.history["loss"])
+    plt.title("LSTM model loss")
+    plt.ylabel("loss")
+    plt.xlabel("epoch")
+    plt.savefig("speech_emotion_recognition/images/lstm_loss.png")
+    plt.close()
+
+    # Plot model accuracy
+    plt.plot(lstm_history.history["accuracy"])
+    plt.title("LSTM model accuracy")
+    plt.ylabel("loss")
+    plt.xlabel("epoch")
+    plt.savefig("speech_emotion_recognition/images/lstm_accuracy.png")
+    plt.close
+
+
 def cnn_model(X, y):
     """
     This function transforms the X and y features,
@@ -63,7 +108,7 @@ def cnn_model(X, y):
     model.add(Activation("relu"))
     model.add(Conv1D(128, 5, padding="same"))
     model.add(Activation("relu"))
-    model.add(Dropout(0.1))
+    model.add(Dropout(0.1))  # 0.3
     model.add(MaxPooling1D(pool_size=(8)))
     model.add(
         Conv1D(
@@ -95,8 +140,8 @@ def cnn_model(X, y):
     cnn_history = model.fit(
         x_traincnn,
         y_train,
-        batch_size=100,
-        epochs=100,
+        batch_size=100,  # 52
+        epochs=100,  # 50
         validation_data=(x_testcnn, y_test),
     )
 
@@ -174,7 +219,6 @@ def cnn_model(X, y):
     clas_report.to_csv("speech_emotion_recognition/features/cnn_clas_report.csv")
     print(classification_report(y_test_int, cnn_pred))
 
-    # Export the trained model
     model_name = "cnn_model.h5"
 
     if not os.path.isdir("speech_emotion_recognition/models"):
