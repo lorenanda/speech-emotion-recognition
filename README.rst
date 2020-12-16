@@ -23,12 +23,10 @@ Deep Learning project to detect emotions from audio files
 * Documentation: https://speech-emotion-recognition.readthedocs.io.
 
 
-Data
+Description
 --------
 
-I used audio files (16bit, 48kHz .wav) from the [RAVDESS (Ryerson Audio-Visual Database of Emotional Speech and Song)](https://zenodo.org/record/1188976#.X152FYaxWis). There are 1440 recordings of 24 professional actors (12 female, 12 male), vocalizing two lexically-matched statements in a neutral North American accent. Speech includes calm, happy, sad, angry, fearful, surprise, and disgust expressions. Each expression is produced at two levels of emotional intensity (normal, strong), with an additional neutral expression.
-
-Filename identifiers:
+I used audio files (16bit, 48kHz .wav) from the [RAVDESS (Ryerson Audio-Visual Database of Emotional Speech and Song)](https://zenodo.org/record/1188976#.X152FYaxWis). There are 1440 recordings of 24 professional actors (12 female, 12 male), vocalizing two lexically-matched statements in a neutral North American accent. Speech includes calm, happy, sad, angry, fearful, surprise, and disgust expressions. Each expression is produced at two levels of emotional intensity (normal, strong), with an additional neutral expression. Filename identifiers:
 
 - Modality (01 = full-AV, 02 = video-only, 03 = audio-only).
 - Vocal channel (01 = speech, 02 = song).
@@ -38,22 +36,21 @@ Filename identifiers:
 - Repetition (01 = 1st repetition, 02 = 2nd repetition).
 - Actor (01 to 24. Odd numbered actors are male, even numbered actors are female).
 
-Features
---------
-
-- MFCC (Mel-Frequency Cepstral Coefficients)
-- Zero-crossing rate: a measure of number of times in a given time interval/frame that the amplitude of the speech signals passes through a value of zero. 
+I extracted the Mel-Frequency Cepstral Coefficients (MFCC) from the audio files and used these values to predict the emotion. 
 
 
 Models
 --------
+Model | Test accuracy
+* MLP: | 47.18% test accuracy
+* CNN: 60.06% test accuracy
+* LSTM: 51.29% test accuracy
 
-* Convolutional Neural Networks
-* Recurrent Neural Networks
-* Hidden Markov Models
+Model summaries and performace plots are saved in images. I used the two best performing models (CNN and LSTM) to make predictions on new audio files (movie dialogue clips and self-recorded voice).
 
 How to use
 --------
+1. Clone this repo: `git clone`
 
 Resources
 --------
