@@ -44,5 +44,5 @@ def make_predictions(file):
 
 
 if __name__ == "__main__":
-    work_rec = "speech_emotion_recognition/recordings/get_out.wav"
+    work_rec = "speech_emotion_recognition/recordings/findahappyplace.wav"
     make_predictions(file=work_rec)
