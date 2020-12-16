@@ -15,7 +15,6 @@ Speech Emotion Recognition
 
 
 
-
 Deep Learning project to detect emotions from audio files
 
 
@@ -26,7 +25,7 @@ Deep Learning project to detect emotions from audio files
 Description
 --------
 
-I used audio files (16bit, 48kHz .wav) from the [RAVDESS (Ryerson Audio-Visual Database of Emotional Speech and Song)](https://zenodo.org/record/1188976#.X152FYaxWis). There are 1440 recordings of 24 professional actors (12 female, 12 male), vocalizing two lexically-matched statements in a neutral North American accent. Speech includes calm, happy, sad, angry, fearful, surprise, and disgust expressions. Each expression is produced at two levels of emotional intensity (normal, strong), with an additional neutral expression. Filename identifiers:
+I used audio files (16bit, 48kHz .wav) from the `Ryerson Audio-Visual Database of Emotional Speech and Song (RAVDESS) <https://zenodo.org/record/1188976#.X152FYaxWis)>`_ These are 1440 recordings of 24 professional actors (12 female, 12 male), vocalizing two lexically-matched statements in a neutral North American accent. Speech includes calm, happy, sad, angry, fearful, surprise, and disgust expressions. Each expression is produced at two levels of emotional intensity (normal, strong), with an additional neutral expression. Filename identifiers:
 
 - Modality (01 = full-AV, 02 = video-only, 03 = audio-only).
 - Vocal channel (01 = speech, 02 = song).
@@ -36,17 +35,17 @@ I used audio files (16bit, 48kHz .wav) from the [RAVDESS (Ryerson Audio-Visual D
 - Repetition (01 = 1st repetition, 02 = 2nd repetition).
 - Actor (01 to 24. Odd numbered actors are male, even numbered actors are female).
 
-I extracted the Mel-Frequency Cepstral Coefficients (MFCC) from the audio files and used these values to predict the emotion. 
+I extracted the Mel-Frequency Cepstral Coefficients (MFCC) from the audio files and used these values to train three Neural Networks models to predict the emotion. 
 
+========  ========
+Model     Accuracy
+========  ========
+MLP       47.18%
+CNN       60.06%
+LSTM      51.29%
+========  ========
 
-Models
---------
-Model | Test accuracy
-* MLP: | 47.18% test accuracy
-* CNN: 60.06% test accuracy
-* LSTM: 51.29% test accuracy
-
-Model summaries and performace plots are saved in images. I used the two best performing models (CNN and LSTM) to make predictions on new audio files (movie dialogue clips and self-recorded voice).
+Model summaries and performace plots are saved in images. I used the two best performing models (CNN and LSTM) to make predictions on new audio files (movie dialogue clips and self-recorded voice). Overall, both models predicted the correct emotion and misclassified similar emotions, when the speech expression was ambiguous.
 
 How to use
 --------
@@ -54,8 +53,8 @@ How to use
 
 Resources
 --------
-* Sabur Ajibola Alim and Nahrul Khair Alang Rashid (December 12th 2018). Some Commonly Used Speech Feature Extraction Algorithms, From Natural to Artificial Intelligence - Algorithms and Applications, Ricardo Lopez-Ruiz, IntechOpen, DOI: 10.5772/intechopen.80419. Available from: https://www.intechopen.com/books/from-natural-to-artificial-intelligence-algorithms-and-applications/some-commonly-used-speech-feature-extraction-algorithms
-* http://www.apsipa.org/proceedings_2016/HTML/paper2016/137.pdf
+* `Sabur Ajibola Alim & Nahrul Khair Alang Rashid (2018). Some Commonly Used Speech Feature Extraction Algorithms <https://www.intechopen.com/books/from-natural-to-artificial-intelligence-algorithms-and-applications/some-commonly-used-speech-feature-extraction-algorithms>`_
+* `Wootaek Lim, Daeyoung Jang & Taejin Lee (). Speech Emotion Recognition using Convolutional and Recurrent Neural Networks <http://www.apsipa.org/proceedings_2016/HTML/paper2016/137.pdf>`_
 
 Credits
 -------
