@@ -59,7 +59,7 @@ def lstm_model(X, y):
     lstm_model.add(LSTM(64, input_shape=(40, 1), return_sequences=True))
     lstm_model.add(LSTM(32))
     lstm_model.add(Dense(32, activation="relu"))
-    lstm_model.add(Dropout(0.1))  #
+    lstm_model.add(Dropout(0.1))
     lstm_model.add(Dense(8, activation="softmax"))
 
     lstm_model.compile(
