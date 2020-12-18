@@ -15,12 +15,8 @@ Speech Emotion Recognition
 
 
 
-Deep Learning project to detect emotions from audio files
-
-
-* Free software: MIT license
-* Documentation: https://speech-emotion-recognition.readthedocs.io.
-
+.. image:: https://www.mathworks.com/help/examples/audio_wavelet/win64/SpeakerIdentificationUsingPitchAndMFCCExample_01.png
+        :target: https://www.mathworks.com/help/examples/audio_wavelet/win64/SpeakerIdentificationUsingPitchAndMFCCExample_01.png
 
 Description
 --------
@@ -64,3 +60,6 @@ This package was created with Cookiecutter_ and the
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+* Free software: MIT license
+* Documentation: https://speech-emotion-recognition.readthedocs.io.
