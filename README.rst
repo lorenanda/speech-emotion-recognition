@@ -45,7 +45,8 @@ Model summaries and performace plots are saved in images. I used the two best pe
 
 How to use
 --------
-1. Clone this repo: `git clone`
+1. Clone this repo: `git clone https://github.com/lorenanda/speech-emotion-recognition.git`
+2. Install the necessary libraries: `pip install -r requirements.txt`
 
 Resources
 --------
