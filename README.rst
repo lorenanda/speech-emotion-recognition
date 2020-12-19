@@ -41,7 +41,7 @@ CNN       60.06%
 LSTM      51.29%
 ========  ========
 
-Model summaries and performace plots are saved in images. I used the two best performing models (CNN and LSTM) to make predictions on new audio files (movie dialogue clips and self-recorded voice). Overall, both models predicted the correct emotion; they misclassified similar emotions in the cases when the speech expression was ambiguous.
+I used the two best performing models (CNN and LSTM) to make predictions on new audio files: audio clips from movies and self-recorded voice for live predictions. Overall, both models predicted the correct emotion; they misclassified similar emotions in the cases when the speech expression was ambiguous (e.g. sad-calm-neutral).
 
 How to use
 --------
