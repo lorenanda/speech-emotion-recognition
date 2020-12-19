@@ -47,11 +47,16 @@ How to use
 --------
 1. Clone this repo: `git clone https://github.com/lorenanda/speech-emotion-recognition.git`
 2. Install the necessary libraries: `pip install -r requirements.txt`
+3. Run `main.py`.
 
 Resources
 --------
-* `Sabur Ajibola Alim & Nahrul Khair Alang Rashid (2018). Some Commonly Used Speech Feature Extraction Algorithms <https://www.intechopen.com/books/from-natural-to-artificial-intelligence-algorithms-and-applications/some-commonly-used-speech-feature-extraction-algorithms>`_
-* `Wootaek Lim, Daeyoung Jang & Taejin Lee (). Speech Emotion Recognition using Convolutional and Recurrent Neural Networks <http://www.apsipa.org/proceedings_2016/HTML/paper2016/137.pdf>`_
+Papers that inspired and helped me in this project:
+
+* Utkarsh Garg et al. (2020). Prediction of Emotions from the Audio Speech Signals using MFCC, MEL and Chroma.
+* Md. Sham-E-Ansari et al. (2020). A Neural Network Based Approach for Recognition of Basic Emotions from Speech.
+* Sabur Ajibola Alim & Nahrul Khair Alang Rashid (2018). Some Commonly Used Speech Feature Extraction Algorithms.
+* Wootaek Lim, Daeyoung Jang & Taejin Lee (2016). Speech Emotion Recognition using Convolutional and Recurrent Neural Networks.
 
 Credits
 -------
