@@ -3,7 +3,7 @@ Speech Emotion Recognition
 ==========================
 
 .. image:: https://travis-ci.org/lorenanda/speech-emotion-recognition.svg?branch=main
-        :target: https://travis-ci.org/lorenanda/speech_emotion_recognition
+        :target: https://travis-ci.org/github/lorenanda/speech-emotion-recognition
 
 
 .. image:: https://github.com/lorenanda/speech-emotion-recognition/blob/main/speech_emotion_recognition/images/project_pipeline.png
