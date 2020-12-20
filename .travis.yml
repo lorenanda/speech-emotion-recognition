@@ -16,5 +16,5 @@ install:
 
 # Command to run tests
 script:
-  - pylint speech_emotion_recognition/*py
+  - pylint speech_emotion_recognition/main.py
   - pytest

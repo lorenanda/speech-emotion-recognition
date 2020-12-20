@@ -3,3 +3,5 @@ pandas
 librosa
 joblib
 tensorflow
+pylint
+flake8
