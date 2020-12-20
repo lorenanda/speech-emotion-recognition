@@ -1,3 +1,6 @@
+"""This module trains three neural network models on 
+the dataset recordings and saves the X and y features."""
+
 import os
 import joblib
 import numpy as np

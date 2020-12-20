@@ -14,7 +14,3 @@ def record_voice():
     sd.wait()  # Wait until recording is finished
     write("speech_emotion_recognition/recordings/myvoice.wav", fs, myrecording)
     print("Voice recording saved.")
-
-
-if __name__ == "__main__":
-    record_voice()
