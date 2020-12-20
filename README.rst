@@ -6,6 +6,10 @@ Speech Emotion Recognition
         :target: https://travis-ci.org/lorenanda/speech_emotion_recognition
 
 
+.. image:: https://github.com/lorenanda/speech-emotion-recognition/blob/main/speech_emotion_recognition/images/project_pipeline.png
+        :target: https://github.com/lorenanda/speech-emotion-recognition/blob/main/speech_emotion_recognition/images/project_pipeline.png
+
+        
 Description
 --------
 This project detects emotions for voice recordings and makes live predictions on self-recorded voices. 
