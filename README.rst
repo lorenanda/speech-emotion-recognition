@@ -6,6 +6,7 @@ Speech Emotion Recognition
         :target: https://travis-ci.org/lorenanda/speech_emotion_recognition
 
 
+
 .. image:: https://www.mathworks.com/help/examples/audio_wavelet/win64/SpeakerIdentificationUsingPitchAndMFCCExample_01.png
         :target: https://www.mathworks.com/help/examples/audio_wavelet/win64/SpeakerIdentificationUsingPitchAndMFCCExample_01.png
 
