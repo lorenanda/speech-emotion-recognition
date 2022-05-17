@@ -1,7 +1,7 @@
 {
     "python.pythonPath": "audio_env/bin/python",
-    "python.linting.pylintEnabled": true,
-    "python.linting.flake8Enabled": false,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
     "editor.formatOnType": true,
     "editor.formatOnSave": true,

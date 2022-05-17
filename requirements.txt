@@ -1,7 +1,9 @@
+flake8
+joblib
+librosa
 matplotlib
 pandas
-librosa
-joblib
-tensorflow
 pylint
-flake8
+seaborn
+soundfile
+tensorflow

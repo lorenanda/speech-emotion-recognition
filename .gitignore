@@ -135,3 +135,4 @@ Audio_Speech_Actors_01-24.zip
 voice_recognition.py
 #images/
 #*.ipynb
+.vscode

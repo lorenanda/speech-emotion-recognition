@@ -46,7 +46,9 @@ def extract_file_info(path):
     )
     audio_df.columns = ["gender", "emotion", "intensity", "actor"]
     audio_df = pd.concat([audio_df, pd.DataFrame(file_path, columns=["path"])], axis=1)
-    audio_df.to_csv("speech_emotion_recognition/features/df_features_new.csv", index=0)
+    audio_df.to_csv(
+        "./speech_emotion_recognition/features/df_features_new.csv", index=0
+    )
 
 
-extract_file_info(path="speech_emotion_recognition/data/")
+extract_file_info(path="./speech_emotion_recognition/data/")
